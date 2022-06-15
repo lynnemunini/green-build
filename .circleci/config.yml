@@ -108,7 +108,7 @@ jobs:
       - print_pipeline_id:
           to: "PipelineId: ${CIRCLE_WORKFLOW_ID}"
 
-workflow:
+workflows:
   pipeline:
     jobs:
       - print_pipeline_id
