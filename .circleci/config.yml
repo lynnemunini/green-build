@@ -124,7 +124,7 @@ jobs:
           name: "Error"
           command: |
             echo "You have an error!!"
-          when: on_fail
+          #when: on_fail
 
 workflows:
   job_failure:
