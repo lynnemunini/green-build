@@ -114,17 +114,17 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      run: 
-        name: "Hello Error!"
-        command: |
-          #!/bin/bash
-          return 1
+      - run: 
+          name: "Hello Error!"
+          command: |
+            #!/bin/bash
+            return 1
       
-      run:
-        name: "Error"
-        command: |
-          echo "You have an error!!"
-        when: on_fail
+      - run:
+          name: "Error"
+          command: |
+            echo "You have an error!!"
+          when: on_fail
 
 workflows:
   job_failure:
