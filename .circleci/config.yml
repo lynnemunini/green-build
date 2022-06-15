@@ -94,8 +94,8 @@ version: 2.1
 commands:
   print_pipeline_id:
     description: "Print the pipelineId"
-     command: |
-        echo "PipelineId: ${CIRCLE_PIPELINE_ID}"         
+    command: |
+      echo "PipelineId: ${CIRCLE_PIPELINE_ID}"
 jobs: 
   print_pipeline_id:
     docker:
