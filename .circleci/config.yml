@@ -95,10 +95,11 @@ commands:
   print_pipeline_id:
     description: "Print the pipelineId"
     parameters:
-      - name: pipelineId
-        description: "The pipelineId"
-        required: true
+      to:
+        type: string
         default: "Hello world"
+    steps:
+      - run: echo << parameters.to >>
 jobs: 
   print_pipeline_id:
     docker:
