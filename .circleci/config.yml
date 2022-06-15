@@ -105,7 +105,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - print_pipeline_id:
-          to: echo "PipelineId: ${CIRCLE_WORKFLOW_ID}"
+          to: "PipelineId: ${CIRCLE_WORKFLOW_ID}"
 
 workflow:
   pipeline:
