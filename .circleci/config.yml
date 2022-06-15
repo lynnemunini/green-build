@@ -99,16 +99,13 @@ commands:
         description: "The pipelineId"
         required: true
         default: "Hello world"
-    steps:
-      - run: |
-          echo "PipelineId: ${CIRCLE_WORKFLOW_ID}"
 jobs: 
   print_pipeline_id:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - print_pipeline_id:
-          to: "Hello"
+          to: echo "PipelineId: ${CIRCLE_WORKFLOW_ID}"
 
 workflow:
   pipeline:
