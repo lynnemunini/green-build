@@ -90,23 +90,43 @@
           
 
 # Create a job that uses a "command" that prints the pipelineId to the console.
+# version: 2.1
+# commands:
+#   print_pipeline_id:
+#     description: "Print the pipelineId"
+#     steps:
+#       - run: echo ${CIRCLE_WORKFLOW_ID}
+# jobs: 
+#   print_pipeline_id:
+#     docker:
+#       - image: circleci/node:13.8.0
+#     steps:
+#       - print_pipeline_id
+# workflows:
+#   pipeline:
+#     jobs:
+#       - print_pipeline_id
+
+# Create a job that has an intentional failure in it with a step that runs on fail that prints "Hello Error!" to the console.
 version: 2.1
-commands:
-  print_pipeline_id:
-    description: "Print the pipelineId"
-    # parameters:
-    #   to:
-    #     type: string
-    #     default: "Hello world"
-    steps:
-      - run: echo ${CIRCLE_WORKFLOW_ID}
 jobs: 
-  print_pipeline_id:
+  with_error: 
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - print_pipeline_id
+      run: 
+        name: "Hello Error!"
+        command: |
+          #!/bin/bash
+          return 1
+      
+      run:
+        name: "Error"
+        command: |
+          echo "You have an error!!"
+        when: on_fail
+
 workflows:
-  pipeline:
+  job_failure:
     jobs:
-      - print_pipeline_id
+      - with_error
