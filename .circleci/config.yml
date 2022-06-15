@@ -38,20 +38,47 @@
 #           requires:
 #             - print-hello
 
+# version: 2.1
+
+# workflows:
+#   test-env-vars:
+#     jobs:
+#       - build
+
+# jobs:
+#   build:
+#     docker:
+#       - image: circleci/node:13.8.0
+#     steps:
+#       - checkout
+#       - run:
+#           name: "Build"
+#           command: |
+#             echo $MY_ENV_VAR
+
 version: 2.1
 
-workflows:
-  test-env-vars:
-    jobs:
-      - build
-
 jobs:
-  build:
+  save_hello_world_output:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
-          name: "Build"
+          name: "Save hello world output"
           command: |
-            echo $MY_ENV_VAR
+            echo "hello world" > output.txt
+          persist_to_workspace:
+            - output.txt
+  
+  print_output_file: 
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run:
+          name: "Print output file"
+          command: |
+            cat output.txt
+          attach_workspace:
+            - output.txt
