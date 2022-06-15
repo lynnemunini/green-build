@@ -100,7 +100,7 @@ commands:
         required: true
         default: "Hello world"
     steps:
-      - run: echo "PipelineId:" ${CIRCLE_WORKFLOW_ID}
+      - run: echo "PipelineId: ${CIRCLE_WORKFLOW_ID}"
 jobs: 
   print_pipeline_id:
     docker:
