@@ -118,7 +118,7 @@ jobs:
           name: "Hello Error!"
           command: |
             #!/bin/bash
-            exit 1
+            exit 0
       
       - run:
           name: "Error"
