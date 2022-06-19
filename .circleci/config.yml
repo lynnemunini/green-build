@@ -140,6 +140,8 @@ jobs:
     executor: aws-cli/default
     steps:
       - checkout
+      - aws-cli/setup:
+          profile-name: default
       - run:
           name: "Setup AWS CLI"
           command: |
@@ -172,6 +174,7 @@ workflows:
   inventory:
     jobs:
       - setup_aws_cli
+          context: aws
       - save_ip:
           requires:
             - setup_aws_cli
