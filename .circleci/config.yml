@@ -132,6 +132,7 @@
 #       - with_error
 
 version 2.1
+
 jobs:
   save_ip:
     docker:
@@ -145,7 +146,19 @@ jobs:
           root: ~/
           paths:
             - inventory.txt
+
+  print_inventory:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: cat ~/inventory.txt
+
 workflows:
   save_ip:
     jobs:
       - save_ip
+      - print_inventory:
+          requires:
+            - save_ip
