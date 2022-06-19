@@ -151,6 +151,7 @@ jobs:
             aws configure set output json
 
             # aws configure set output text
+            # NOTE: aws commands need to be run in the same job as the aws-cli/install and aws-cli/configure commands.
 
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Project,Values=udacity" --output text > ~/inventory.txt
       - persist_to_workspace:
