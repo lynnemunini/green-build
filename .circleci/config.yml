@@ -133,13 +133,9 @@
 
 version: 2.1
 
-orbs:
-  aws-cli: circleci/aws-cli:latest
-  aws-ec2: circleci/aws-ec2:latest
 jobs:
   setup_aws_cli:
-    orbs:
-      - aws-cli/default
+    executor: aws-cli/default
     steps:
       - checkout
       - run:
