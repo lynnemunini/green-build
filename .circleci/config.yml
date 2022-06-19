@@ -141,19 +141,19 @@ jobs:
       - run:
           name: "Save IP"
           command: |
-            echo $CIRCLE_NODE_INDEX
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - inventory.txt
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Project,Values=udacity" --output text > ~/inventory.txt
+      # - persist_to_workspace:
+      #     root: ~/
+      #     paths:
+      #       - inventory.txt
 
-  print_inventory:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run: cat ~/inventory.txt
+  # print_inventory:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/
+  #     - run: cat ~/inventory.txt
 
 workflows:
   save_ip:
