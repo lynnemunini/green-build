@@ -171,12 +171,12 @@ jobs:
       - run: cat ~/inventory.txt
 
 workflows:
-  save_ip:
+  inventory:
     jobs:
       - setup_aws_cli
       - save_ip:
           requires:
-            - setup_aws_cli    
+            - setup_aws_cli
       - print_inventory:
           requires:
             - save_ip
