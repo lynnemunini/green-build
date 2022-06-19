@@ -159,6 +159,6 @@ workflows:
   save_ip:
     jobs:
       - save_ip
-      - print_inventory:
-          requires:
-            - save_ip
+      # - print_inventory:
+      #     requires:
+      #       - save_ip
