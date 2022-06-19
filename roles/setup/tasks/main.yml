@@ -1,5 +1,5 @@
 ---
-- name: "update apt packages."
+- name: "update yum packages."
   become: yes
   apt:
     update_cache: yes
@@ -9,8 +9,8 @@
   apt:
     upgrade: yes
 
-- name:
-  name: "install nodejs and npm dependancies"
+
+- name: "install nodejs and npm dependancies"
   become: yes
   apt:
     name: ["nodejs", "npm"]
@@ -19,10 +19,11 @@
 
 - name: "Install pm2"
   become: yes
-  apt:
-    name: "pm2"
-    state: latest
-    update_cache: yes
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
 
 # create a ~/web directory
 - name: "create a ~/web directory"
