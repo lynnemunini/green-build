@@ -175,7 +175,7 @@
 #           requires:
 #             - setup_aws_cli
 
-version 2.1
+version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@3.1
