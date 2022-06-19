@@ -131,7 +131,7 @@
 #     jobs:
 #       - with_error
 
-version 2.1
+version: 2.1
 
 workflows:
   save_ip:
