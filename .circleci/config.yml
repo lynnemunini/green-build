@@ -131,46 +131,67 @@
 #     jobs:
 #       - with_error
 
-version: 2.1
+# version: 2.1
+
+# orbs:
+#   aws-cli: circleci/aws-cli@3.1
+# jobs:
+#   setup_aws_cli:
+#     executor: aws-cli/default
+#     steps:
+#       - checkout
+#       - aws-cli/setup:
+#           profile-name: default
+#       - run:
+#           name: "Setup AWS CLI"
+#           command: |
+#             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+#             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+#             aws configure set region $AWS_REGION
+#             aws configure set output json
+
+#             # aws configure set output text
+#             # NOTE: aws commands need to be run in the same job as the aws-cli/install and aws-cli/configure commands.
+
+#             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Project,Values=udacity" --output text > ~/inventory.txt
+#       - persist_to_workspace:
+#           root: ~/
+#           paths:
+#             - inventory.txt
+
+#   print_inventory:
+#     docker:
+#       - image: circleci/node:13.8.0
+#     steps:
+#       - attach_workspace:
+#           at: ~/
+#       - run: cat ~/inventory.txt
+
+# workflows:
+#   inventory:
+#     jobs:
+#       - setup_aws_cli
+#       - print_inventory:
+#           requires:
+#             - setup_aws_cli
+
+version 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@3.1
+
 jobs:
-  setup_aws_cli:
-    executor: aws-cli/default
+  create_infrastructure:
+    docker:
+      - image: amazon/aws-cli
     steps:
       - checkout
-      - aws-cli/setup:
-          profile-name: default
       - run:
-          name: "Setup AWS CLI"
+          name: Create Cloudformation Stack
           command: |
-            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            aws configure set region $AWS_REGION
-            aws configure set output json
-
-            # aws configure set output text
-            # NOTE: aws commands need to be run in the same job as the aws-cli/install and aws-cli/configure commands.
-
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Project,Values=udacity" --output text > ~/inventory.txt
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - inventory.txt
-
-  print_inventory:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run: cat ~/inventory.txt
-
+            aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+            --region $AWS_REGION
 workflows:
-  inventory:
+  create_infrastructure:
     jobs:
-      - setup_aws_cli
-      - print_inventory:
-          requires:
-            - setup_aws_cli
+      - create_infrastructure
