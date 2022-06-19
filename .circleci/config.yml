@@ -174,7 +174,7 @@ workflows:
   save_ip:
     jobs:
       - setup_aws_cli
-      - save_ip
+      - save_ip:
           requires:
             - setup_aws_cli    
       - print_inventory:
