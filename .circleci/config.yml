@@ -196,8 +196,6 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
-      - attach_workspace:
-          at: ~/
       - run:
           name: Get IP Addresses
           command: |
@@ -230,4 +228,4 @@ workflows:
             - create_infrastructure
       - configure_infrastructure:
           requires:
-            - create_infrastructure
+            - get_ip_addresses
