@@ -133,7 +133,22 @@
 
 version: 2.1
 
+orbs:
+  aws-cli: circleci/aws-cli:latest
+  aws-ec2: circleci/aws-ec2:latest
 jobs:
+  setup_aws_cli:
+    orbs:
+      - aws-cli/default
+    steps:
+      - checkout
+      - run:
+          name: "Setup AWS CLI"
+          command: |
+            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            aws configure set region $AWS_REGION
+            aws configure set output json
   save_ip:
     docker:
       - image: circleci/node:13.8.0
@@ -158,7 +173,10 @@ jobs:
 workflows:
   save_ip:
     jobs:
+      - setup_aws_cli
       - save_ip
+          requires:
+            - setup_aws_cli    
       - print_inventory:
           requires:
             - save_ip
