@@ -191,6 +191,17 @@ jobs:
           command: |
             aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
             --region $AWS_REGION
+
+  get_ip_addresses:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Get IP Addresses
+          command: |
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Project,Values=udacity" --output text > ~/inventory.txt
   
   configure_infrastructure:
     docker:
@@ -214,6 +225,9 @@ workflows:
   create_infrastructure:
     jobs:
       - create_infrastructure
+      - get_ip_addresses:
+          requires:
+            - create_infrastructure
       - configure_infrastructure:
           requires:
             - create_infrastructure

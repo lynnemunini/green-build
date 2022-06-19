@@ -9,6 +9,9 @@ Resources:
       KeyName: gray
       ImageId: 'ami-08d4ac5b634553e16'
       InstanceType: t2.micro
+      Tags:
+        - Key: Project
+          Value: "udacity"
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
