@@ -133,14 +133,6 @@
 
 version: 2.1
 
-workflows:
-  save_ip:
-    jobs:
-      - save_ip
-      - print_inventory:
-          requires:
-            - save_ip
-
 jobs:
   save_ip:
     docker:
@@ -162,3 +154,11 @@ jobs:
       - attach_workspace:
           at: ~/
       - run: cat ~/inventory.txt
+
+workflows:
+  save_ip:
+    jobs:
+      - save_ip
+      - print_inventory:
+          requires:
+            - save_ip
