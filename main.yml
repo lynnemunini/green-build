@@ -22,9 +22,16 @@
 #   roles:
 #     - configure-server
 
----
-- name: Exercise #1
-  hosts: localhost
+# ---
+# - name: Exercise #1
+#   hosts: localhost
 
+#   roles:
+#     - print
+
+---
+- name: "hello world webpage"
+  hosts: localhost
   roles:
-    - print
+    - prepare
+    - apache
