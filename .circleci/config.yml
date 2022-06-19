@@ -108,25 +108,44 @@
 #       - print_pipeline_id
 
 # Create a job that has an intentional failure in it with a step that runs on fail that prints "Hello Error!" to the console.
-version: 2.1
-jobs: 
-  with_error: 
+# version: 2.1
+# jobs: 
+#   with_error: 
+#     docker:
+#       - image: circleci/node:13.8.0
+#     steps:
+#       - run: 
+#           name: "Hello Error!"
+#           command: |
+#             #!/bin/bash
+#             exit 1
+      
+#       - run:
+#           name: "Error"
+#           command: |
+#             echo "You have an error!!"
+#           when: on_fail
+
+# workflows:
+#   job_failure:
+#     jobs:
+#       - with_error
+
+version 2.1
+jobs:
+  save_ip:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: 
-          name: "Hello Error!"
-          command: |
-            #!/bin/bash
-            exit 1
-      
       - run:
-          name: "Error"
+          name: "Save IP"
           command: |
-            echo "You have an error!!"
-          when: on_fail
-
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Project,Values=udacity" --output text > ~/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - inventory.txt
 workflows:
-  job_failure:
+  save_ip:
     jobs:
-      - with_error
+      - save_ip
