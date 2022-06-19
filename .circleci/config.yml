@@ -173,7 +173,7 @@ jobs:
 workflows:
   inventory:
     jobs:
-      - setup_aws_cli
+      - setup_aws_cli:
           context: aws
       - save_ip:
           requires:
