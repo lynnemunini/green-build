@@ -141,7 +141,7 @@ jobs:
       - run:
           name: "Save IP"
           command: |
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Project,Values=udacity" --output text > ~/inventory.txt
+            echo $CIRCLE_NODE_INDEX
       - persist_to_workspace:
           root: ~/
           paths:
