@@ -142,13 +142,9 @@ jobs:
       - checkout
       - aws-cli/setup:
           profile-name: default
-      - run:
-          name: "Setup AWS CLI"
-          command: |
-            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            aws configure set region $AWS_REGION
-            aws configure set output json
+          aws-access-key-id: $AWS_ACCESS_KEY
+          aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
+          region: $AWS_REGION
   save_ip:
     docker:
       - image: circleci/node:13.8.0
@@ -173,8 +169,7 @@ jobs:
 workflows:
   inventory:
     jobs:
-      - setup_aws_cli:
-          context: aws
+      - setup_aws_cli
       - save_ip:
           requires:
             - setup_aws_cli
