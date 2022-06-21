@@ -258,8 +258,6 @@ version: 2.1
 commands:
   destroy_environment:
     description: "Destroy the environment"
-    docker:
-      - image: amazon/aws-cli
     steps:
     - run:
         name: Destroy the environment
@@ -281,7 +279,7 @@ jobs:
             --region $AWS_REGION
   smoke_test:
     docker:
-      - image: alpine:latest
+      - image: amazon/aws-cli
     steps:
       - run: apk add --update curl
       - run:
