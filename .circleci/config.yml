@@ -181,16 +181,16 @@ orbs:
   aws-cli: circleci/aws-cli@3.1
 
 jobs:
-  create_infrastructure:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - run:
-          name: Create Cloudformation Stack
-          command: |
-            aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
-            --region $AWS_REGION
+  # create_infrastructure:
+  #   docker:
+  #     - image: amazon/aws-cli
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Create Cloudformation Stack
+  #         command: |
+  #           aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+  #           --region $AWS_REGION
 
   # get_ip_addresses:
   #   docker:
@@ -201,34 +201,34 @@ jobs:
   #         command: |
   #           aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Project,Values=udacity" --output text > ~/inventory.txt
   
-  # configure_infrastructure:
-  #   docker:
-  #     - image: python:3.7-alpine3.11
-  #   steps:
-  #     - checkout
-  #     - add_ssh_keys:
-  #         fingerprints: $SSH_KEY_FINGERPRINT
-  #     - run:
-  #         name: Install Ansible
-  #         command: |
-  #           # Install Ansible
-  #           apk add --update ansible
-  #     - run:
-  #         name: Run Playbook and Configure server
-  #         command: |
-  #           # Configure Ansible
-  #           ansible-playbook -i inventory.txt main-remote.yml
+  configure_infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: $SSH_KEY_FINGERPRINT
+      - run:
+          name: Install Ansible
+          command: |
+            # Install Ansible
+            apk add --update ansible
+      - run:
+          name: Run Playbook and Configure server
+          command: |
+            # Configure Ansible
+            ansible-playbook -i inventory.txt main-remote.yml
 
 workflows:
   create_infrastructure:
     jobs:
-      - create_infrastructure
+      # - create_infrastructure
       # - get_ip_addresses:
       #     requires:
       #       - create_infrastructure
-      # - configure_infrastructure
-      #     requires:
-      #       - create_infrastructure
+      - configure_infrastructure
+          requires:
+            - create_infrastructure
 
 # version: 2.1
 
