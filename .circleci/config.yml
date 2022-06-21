@@ -283,7 +283,9 @@ jobs:
     steps:
       - run:
           name: smoke test
-          command: return 1
+          command: |
+            #!/bin/bash
+            return 1
       - destroy_environment
 
 workflows:
