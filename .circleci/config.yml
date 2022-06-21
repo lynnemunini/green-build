@@ -175,22 +175,22 @@
 #           requires:
 #             - setup_aws_cli
 
-# version: 2.1
+version: 2.1
 
-# orbs:
-#   aws-cli: circleci/aws-cli@3.1
+orbs:
+  aws-cli: circleci/aws-cli@3.1
 
-# jobs:
-  # create_infrastructure:
-  #   docker:
-  #     - image: amazon/aws-cli
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Create Cloudformation Stack
-  #         command: |
-  #           aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
-  #           --region $AWS_REGION
+jobs:
+  create_infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Create Cloudformation Stack
+          command: |
+            aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+            --region $AWS_REGION
 
   # get_ip_addresses:
   #   docker:
@@ -219,42 +219,42 @@
   #           # Configure Ansible
   #           ansible-playbook -i inventory.txt main-remote.yml
 
-# workflows:
-#   create_infrastructure:
-#     jobs:
-      # - create_infrastructure
+workflows:
+  create_infrastructure:
+    jobs:
+      - create_infrastructure
       # - get_ip_addresses:
       #     requires:
       #       - create_infrastructure
       # - configure_infrastructure
-          # requires:
-          #   - create_infrastructure
+      #     requires:
+      #       - create_infrastructure
 
-version: 2.1
+# version: 2.1
 
-jobs:
-  # Smoke testing
-  smoke_test:
-    docker:
-      - image: alpine:latest
-    steps:
-      - run: apk add --update curl
-      - run:
-          name: smoke test
-          command: |
-            URL="https://blog.udacity.com/"
-            # Test if website exists
-            if curl -s --head ${URL}
-            then
-              return 0
-            else:
-              return 1
-            fi
+# jobs:
+#   # Smoke testing
+#   smoke_test:
+#     docker:
+#       - image: alpine:latest
+#     steps:
+#       - run: apk add --update curl
+#       - run:
+#           name: smoke test
+#           command: |
+#             URL="https://blog.udacity.com/"
+#             # Test if website exists
+#             if curl -s --head ${URL}
+#             then
+#               return 0
+#             else:
+#               return 1
+#             fi
 
-workflows:
-  smoke_test:
-    jobs:
-      - smoke_test
+# workflows:
+#   smoke_test:
+#     jobs:
+#       - smoke_test
             
 
 
